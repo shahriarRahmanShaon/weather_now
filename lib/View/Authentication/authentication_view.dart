@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 enum AuthenticationCaller {
   login,
@@ -39,7 +40,7 @@ class AuthenticationView extends StatelessWidget {
     );
   }
 
-  // Get Started-specific design
+  // Signup-specific design
   Widget _buildGetStartedView() {
     return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
