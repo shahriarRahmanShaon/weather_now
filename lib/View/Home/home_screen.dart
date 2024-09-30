@@ -14,7 +14,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   final LocationController _locationController = Get.put(LocationController());
   final HomeController _homeController = Get.put(HomeController());
 
@@ -27,21 +26,65 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Weather from info'),
+      backgroundColor: Colors.white,
+        body: SafeArea(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(26.0),
+            child: Row(
+              children: [
+                const Text(
+                  'Hello Arian,\nDiscover the weather',
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
+                ),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.all(4.0),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEFEEF9),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: const Color(0xFFF7F6FC),
+                      width: 2.0
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      backgroundColor: Color(0xFFEFEEF9),
+                      radius: 15.0,
+                        backgroundImage: AssetImage('assets/icons/search.png')
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(4.0),
+                    decoration: BoxDecoration(
+                      color: Color(0xFFEFEEF9),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                          color: Color(0xFFF7F6FC),
+                          width: 2.0
+                      ),
+                    ),
+                    child: const Padding(
+                      padding:  EdgeInsets.all(8.0),
+                      child:  CircleAvatar(
+                        backgroundColor: Color(0xFFEFEEF9),
+                        radius: 15.0,
+                        backgroundImage: AssetImage('assets/icons/globe.png'),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
-      body: Obx( () {
-        return Column (
-          children: [
-            Text(
-             '${_homeController.weatherModel.value?.name}'
-            )
-          ],
-        );
-      }),
-    );
+    ));
   }
 }
-
-
-
