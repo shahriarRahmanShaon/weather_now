@@ -42,7 +42,7 @@ class SignupLoginCard extends StatelessWidget {
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  Get.to (()=> const AuthenticationView(caller: AuthenticationCaller.getStarted));
+                  Get.to (()=> AuthenticationView(caller: AuthenticationCaller.getStarted));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF6151C3),
@@ -60,7 +60,7 @@ class SignupLoginCard extends StatelessWidget {
                   const Text('Already have an account?'),
                   TextButton(
                     onPressed: () {
-                      Get.to (()=> const AuthenticationView(caller: AuthenticationCaller.login));
+                      Get.to (()=> AuthenticationView(caller: AuthenticationCaller.login));
                     },
                     child: const Text('Log in', style: TextStyle(color: Color(0xFF6151C3)),),
                   ),
