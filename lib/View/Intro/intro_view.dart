@@ -17,7 +17,7 @@ class IntroView extends StatelessWidget {
               fit: BoxFit.cover, // Makes sure the SVG fills the entire background
             ),
           ),
-          Positioned(
+          const Positioned(
             bottom: 30.0, // Controls how far the card is from the bottom
             left: 20.0,
             right: 20.0,

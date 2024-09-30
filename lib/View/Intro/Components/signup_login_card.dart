@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:weather_now/View/Authentication/authentication_view.dart';
 
 class SignupLoginCard extends StatelessWidget {
   const SignupLoginCard({super.key});
@@ -21,7 +23,7 @@ class SignupLoginCard extends StatelessWidget {
               const SizedBox(height: 10),
               const Text(
                 'Explore global map of wind, weather, and ocean conditions',
-                textAlign: TextAlign.center, // Align text to center
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w700,
@@ -31,7 +33,7 @@ class SignupLoginCard extends StatelessWidget {
               const SizedBox(height: 15.0),
               const Text(
                 'Planning your trip becomes easier with Ideate Weather App. Instantly see the whole world’s weather in a few seconds.',
-                textAlign: TextAlign.center, // Align text to center
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 15.0,
                   color: Colors.black87,
@@ -40,7 +42,7 @@ class SignupLoginCard extends StatelessWidget {
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  // Define action for the button
+                  Get.to (()=> const AuthenticationView(caller: AuthenticationCaller.getStarted));
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF6151C3),
@@ -58,7 +60,7 @@ class SignupLoginCard extends StatelessWidget {
                   const Text('Already have an account?'),
                   TextButton(
                     onPressed: () {
-                      // Define action for login
+                      Get.to (()=> const AuthenticationView(caller: AuthenticationCaller.login));
                     },
                     child: const Text('Log in', style: TextStyle(color: Color(0xFF6151C3)),),
                   ),
