@@ -5,11 +5,14 @@ class WeatherCard extends StatelessWidget {
   final String city;
   final String temperature;
   final String weatherCondition;
+  final String weatherImage;
 
-  WeatherCard({
+  const WeatherCard({
+    super.key,
     required this.city,
     required this.temperature,
     required this.weatherCondition,
+    required this.weatherImage,
   });
 
   @override
@@ -26,38 +29,78 @@ class WeatherCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Current location', style: TextStyle(
+                // Conditional text based on city name
+                Text(
+                  _getLocationText(city),
+                  style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white
-                ),),
-                Text(city, style: const TextStyle(
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white
-                ),),
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  city,
+                  style: const TextStyle(
+                    fontSize: 28.0,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
+                  ),
+                ),
                 const SizedBox(height: 26),
-                Text(weatherCondition, style: const TextStyle(
+                Text(
+                  weatherCondition,
+                  style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w400,
-                    color: Colors.white
-                ),),
+                    color: Colors.white,
+                  ),
+                ),
               ],
             ),
             const Spacer(),
             Column(
               children: [
-                Image.asset('assets/icons/CloudThreeZap.png', height: 100, width: 100,),
-                Text(temperature + '"C', style: TextStyle(
+                Image.asset(
+                  'assets/icons/$weatherImage',
+                  height: 120,
+                  width: 120,
+                ),
+                Text(
+                  '${temperature.toCelsius().toStringAsFixed(2)} °C',
+                  style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white
-                ),),
+                    color: Colors.white,
+                  ),
+                ),
               ],
-            )
+            ),
           ],
-        )
+        ),
       ),
     );
+  }
+  String _getLocationText(String city) {
+    switch (city) {
+      case 'Russia':
+        return 'Russia';
+      case 'Tokyo':
+        return 'Japan';
+      case 'Riyadh':
+        return 'Saudi Arabia';
+      default:
+        return 'Current Location';
+    }
+  }
+}
+
+extension TemperatureConversion on String {
+  double toCelsius() {
+    try {
+      double kelvin = double.parse(this);
+      return kelvin - 273.15;
+    } catch (e) {
+      return 0.0;
+    }
   }
 }
