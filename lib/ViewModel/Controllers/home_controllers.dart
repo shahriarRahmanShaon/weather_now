@@ -1,13 +1,15 @@
 import 'package:get/get.dart';
 import 'package:weather_now/Data/Network/api_services.dart';
 import 'package:weather_now/Model/current_weather_model.dart';
+import 'package:weather_now/Model/weather_forcast_model.dart';
 import 'package:weather_now/Resources/AppConstants/app_constants.dart';
 import '../../View/Home/home_screen.dart';
 
 class HomeController extends GetxController {
   Rx<WeatherModel?> weatherModel = Rx<WeatherModel?>(null);
   var weatherDataForSpecificLocations = <String, WeatherModel>{}.obs;
-
+  var forecastDataForSpecificLocations = <String, WeatherForecast>{}.obs;
+  
   getCurrentWeatherData(String url) {
      ApiServices().getApi(url).then((value) {
        weatherModel.value = WeatherModel.fromJson(value);
@@ -30,12 +32,11 @@ class HomeController extends GetxController {
     }
   }
 
-  getSevenDayForecast(double lat, double lon, String locationName) {
-    String url =
-        'https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&exclude=hourly,minutely,current&appid=${AppConstants.apiKey}';
-
+  getSevenDayForecast(double lat, double lon) {
+    String url = AppConstants.getForcastApiUrl(lat, lon);
     ApiServices().getApi(url).then((value) {
-      forecastDataForSpecificLocations[locationName] = ForecastModel.fromJson(value);
+      forecastDataForSpecificLocations['locationName'] = WeatherForecast.fromJson(value);
     });
+    print(forecastDataForSpecificLocations);
   }
 }

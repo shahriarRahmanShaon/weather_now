@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import 'package:weather_now/View/Details/Components/wind_pressure_card.dart';
+import 'package:weather_now/ViewModel/Controllers/home_controllers.dart';
 
 class CarouselScreen extends StatefulWidget {
   @override
@@ -9,11 +11,13 @@ class CarouselScreen extends StatefulWidget {
 
 class _CarouselScreenState extends State<CarouselScreen> {
   final PageController _pageController = PageController(viewportFraction: 0.7);
+  final _homeController = Get.find<HomeController>();
   double currentPage = 0;
 
   @override
   void initState() {
     super.initState();
+    _homeController.getSevenDayForecast(23.80, 90.41);
     _pageController.addListener(() {
       setState(() {
         currentPage = _pageController.page!;
