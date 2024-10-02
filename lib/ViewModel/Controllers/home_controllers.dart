@@ -30,6 +30,12 @@ class HomeController extends GetxController {
     }
   }
 
+  getSevenDayForecast(double lat, double lon, String locationName) {
+    String url =
+        'https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&exclude=hourly,minutely,current&appid=${AppConstants.apiKey}';
 
-
+    ApiServices().getApi(url).then((value) {
+      forecastDataForSpecificLocations[locationName] = ForecastModel.fromJson(value);
+    });
+  }
 }
