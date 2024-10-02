@@ -5,6 +5,8 @@ import 'package:weather_now/View/Home/Components/weather_card.dart';
 import 'package:weather_now/ViewModel/Controllers/home_controllers.dart';
 import 'package:weather_now/ViewModel/Controllers/location_controller.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:weather_now/View/Details/Components/carousel.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -96,7 +98,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           city: '${_homeController.weatherModel.value?.name ?? ''}',
                           temperature: '${_homeController.weatherModel.value?.main?.temp ?? ''}',
                           weatherCondition: '${_homeController.weatherModel.value?.weather?[0].description ?? ''}',
-                        weatherImage: AppConstants.getWeatherImage(_homeController.weatherModel.value?.weather?[0].id ?? 0),),
+                        weatherImage: AppConstants.getWeatherImage(_homeController.weatherModel.value?.weather?[0].id ?? 0),
+                        onTap: () {
+                          showCupertinoModalBottomSheet(
+                              context: context,
+                              builder: (context) => CarouselScreen()
+                          );
+                        },),
                       const SizedBox(height: 30),
                       const Text(
                         'Around the world',
@@ -111,19 +119,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           city: 'Russia',
                           temperature: '${_homeController.weatherDataForSpecificLocations['Russia']?.main?.temp ?? ''}',
                           weatherCondition: '${_homeController.weatherDataForSpecificLocations['Russia']?.weather?[0].description ?? ''}',
-                         weatherImage: AppConstants.getWeatherImage(_homeController.weatherDataForSpecificLocations['Russia']?.weather?[0].id ?? 0)),
+                         weatherImage: AppConstants.getWeatherImage(_homeController.weatherDataForSpecificLocations['Russia']?.weather?[0].id ?? 0), onTap: () {  },),
                       const SizedBox(height: 10.0),
                       WeatherCard(
                           city: 'Riyadh',
                           temperature: '${_homeController.weatherDataForSpecificLocations['Riyadh']?.main?.temp ?? ''}',
                           weatherCondition: '${_homeController.weatherDataForSpecificLocations['Riyadh']?.weather?[0].description ?? ''}',
-                        weatherImage: AppConstants.getWeatherImage(_homeController.weatherDataForSpecificLocations['Riyadh']?.weather?[0].id ?? 0),),
+                        weatherImage: AppConstants.getWeatherImage(_homeController.weatherDataForSpecificLocations['Riyadh']?.weather?[0].id ?? 0), onTap: () {  },),
                       const SizedBox(height: 10.0),
                       WeatherCard(
                           city: 'Tokyo',
                           temperature: '${_homeController.weatherDataForSpecificLocations['Tokyo']?.main?.temp ?? ''}',
                           weatherCondition: '${_homeController.weatherDataForSpecificLocations['Tokyo']?.weather?[0].description ?? ''}',
-                        weatherImage: AppConstants.getWeatherImage(_homeController.weatherDataForSpecificLocations['Tokyo']?.weather?[0].id ?? 0),),
+                        weatherImage: AppConstants.getWeatherImage(_homeController.weatherDataForSpecificLocations['Tokyo']?.weather?[0].id ?? 0), onTap: () {  },),
                     ],
                   ),
                 ),
