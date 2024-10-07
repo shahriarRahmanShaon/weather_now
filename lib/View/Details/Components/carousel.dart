@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:weather_now/Model/weather_forcast_model.dart';
 import 'package:weather_now/Resources/AppConstants/app_constants.dart';
 import 'package:weather_now/View/Details/Components/wind_pressure_card.dart';
 import 'package:weather_now/ViewModel/Controllers/home_controllers.dart';
@@ -71,33 +70,41 @@ class _CarouselScreenState extends State<CarouselScreen> {
                   color: const Color(0xFFF7F6FC),
                   borderRadius: BorderRadius.circular(45.0),
                 ),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(left: 25, top: 25),
                       child: Text(
                         'Weather Details',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
-                          fontSize: 20,
+                          fontSize: 25,
                         ),
                       ),
                     ),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            WindPressureCard(windSpeed: 20),
-                            SizedBox(width: 20),
-                            WindPressureCard(windSpeed: 20),
-                            SizedBox(width: 20),
-                            WindPressureCard(windSpeed: 20),
-                          ],
-                        ),
+                        padding: const EdgeInsets.all(20.0),
+                        child: Obx(() {
+                          var currentForecast = _homeController.selectedForecasts[currentPage.toInt()];
+                          var windSpeed = currentForecast.wind?.speed ?? 0;
+                          var pressure = currentForecast.main?.pressure ?? 0;
+                          var humidity = currentForecast.main?.humidity ?? 0;
+
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              WeatherCard(windValue: windSpeed.toDouble(), weatherType: WeatherType.wind),
+                              const SizedBox(width: 20),
+                              WeatherCard(pressureValue: pressure.toDouble(), weatherType: WeatherType.pressure),
+                              const SizedBox(width: 20),
+                              WeatherCard(humidityValue: humidity.toDouble(), weatherType: WeatherType.humidity),
+                              const SizedBox(width: 20),
+                            ],
+                          );
+                        }),
                       ),
                     ),
                   ],
@@ -145,7 +152,7 @@ class _CarouselScreenState extends State<CarouselScreen> {
                       Text(
                         '${forecast.main?.temp?.toString().toCelsius().toStringAsFixed(0)}°C',
                         style: const TextStyle(
-                          fontSize: 35.0,
+                          fontSize: 45.0,
                           fontWeight: FontWeight.w800,
                           color: Colors.white,
                         ),
