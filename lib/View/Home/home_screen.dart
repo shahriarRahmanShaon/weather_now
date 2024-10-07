@@ -27,6 +27,45 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+  void _showAddLocationPopup() {
+    String enteredCity = '';
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add a City'),
+          content: TextField(
+            onChanged: (value) {
+              enteredCity = value;
+            },
+            decoration: const InputDecoration(
+              hintText: 'Enter city name',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                if (enteredCity.isNotEmpty) {
+                  _homeController.weatherDataAroundTheWorld.add(enteredCity);
+                  _homeController.getWeatherDataForFixedLocations();
+                }
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Greeting and search buttons
                       Row(
                         children: [
                           const Text(
@@ -76,7 +116,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Container(
@@ -103,50 +142,65 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       const SizedBox(height: 30),
+
+                      // WeatherCard for the main city
                       WeatherCard(
-                          city: '${_homeController.weatherModel.value?.name ?? ''}',
-                          temperature: '${_homeController.weatherModel.value?.main?.temp ?? ''}',
-                          weatherCondition: '${_homeController.weatherModel.value?.weather?[0].description ?? ''}',
+                        city: '${_homeController.weatherModel.value?.name ?? ''}',
+                        temperature: '${_homeController.weatherModel.value?.main?.temp ?? ''}',
+                        weatherCondition: '${_homeController.weatherModel.value?.weather?[0].description ?? ''}',
                         weatherImage: AppConstants.getWeatherImage(_homeController.weatherModel.value?.weather?[0].id ?? 0),
                         onTap: () {
                           showCupertinoModalBottomSheet(
                               context: context,
-                              builder: (context) => CarouselScreen()
-                          );
-                        },),
+                              builder: (context) => CarouselScreen());
+                        },
+                      ),
                       const SizedBox(height: 30),
-                      const Text(
-                        'Around the world',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
+
+                      // Around the world section with add button
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Around the world',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.add),
+                            onPressed: _showAddLocationPopup, // Show popup on press
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 10.0),
-                      WeatherCard(
-                          city: 'Russia',
-                          temperature: '${_homeController.weatherDataForSpecificLocations['Russia']?.main?.temp ?? ''}',
-                          weatherCondition: '${_homeController.weatherDataForSpecificLocations['Russia']?.weather?[0].description ?? ''}',
-                         weatherImage: AppConstants.getWeatherImage(_homeController.weatherDataForSpecificLocations['Russia']?.weather?[0].id ?? 0), onTap: () {  },),
-                      const SizedBox(height: 10.0),
-                      WeatherCard(
-                          city: 'Riyadh',
-                          temperature: '${_homeController.weatherDataForSpecificLocations['Riyadh']?.main?.temp ?? ''}',
-                          weatherCondition: '${_homeController.weatherDataForSpecificLocations['Riyadh']?.weather?[0].description ?? ''}',
-                        weatherImage: AppConstants.getWeatherImage(_homeController.weatherDataForSpecificLocations['Riyadh']?.weather?[0].id ?? 0), onTap: () {  },),
-                      const SizedBox(height: 10.0),
-                      WeatherCard(
-                          city: 'Tokyo',
-                          temperature: '${_homeController.weatherDataForSpecificLocations['Tokyo']?.main?.temp ?? ''}',
-                          weatherCondition: '${_homeController.weatherDataForSpecificLocations['Tokyo']?.weather?[0].description ?? ''}',
-                        weatherImage: AppConstants.getWeatherImage(_homeController.weatherDataForSpecificLocations['Tokyo']?.weather?[0].id ?? 0), onTap: () {  },),
+
+                      // Display WeatherCards for each city in weatherDataForSpecificLocations
+                      Column(
+                        children: _homeController.weatherDataForSpecificLocations.entries.map((entry) {
+                          return Column(
+                            children: [
+                              WeatherCard(
+                                city: entry.key,
+                                temperature: '${entry.value.main?.temp ?? ''}',
+                                weatherCondition: '${entry.value.weather?[0].description ?? ''}',
+                                weatherImage: AppConstants.getWeatherImage(entry.value.weather?[0].id ?? 0),
+                                onTap: () {},
+                              ),
+                              const SizedBox(height: 10.0),
+                            ],
+                          );
+                        }).toList(),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
 
+            // Loader for location fetching
             if (_locationController.isAccessingLocation.value)
               Container(
                 color: Colors.black.withOpacity(0.7),
@@ -162,8 +216,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-
-
-
-
