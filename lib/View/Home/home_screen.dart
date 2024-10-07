@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weather_now/Resources/AppConstants/app_constants.dart';
 import 'package:weather_now/View/Home/Components/weather_card.dart';
+import 'package:weather_now/View/Search/search_screen.dart';
 import 'package:weather_now/ViewModel/Controllers/home_controllers.dart';
 import 'package:weather_now/ViewModel/Controllers/location_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,26 +49,34 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontSize: 20.0, fontWeight: FontWeight.w600),
                           ),
                           const Spacer(),
-                          Container(
-                            padding: const EdgeInsets.all(4.0),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFEFEEF9),
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: const Color(0xFFF7F6FC),
-                                width: 2.0,
-                              ),
-                            ),
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: CircleAvatar(
-                                backgroundColor: Color(0xFFEFEEF9),
-                                radius: 15.0,
-                                backgroundImage:
-                                AssetImage('assets/icons/search.png'),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.to(() => const SearchPage());
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(4.0),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFEFEEF9),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: const Color(0xFFF7F6FC),
+                                    width: 2.0,
+                                  ),
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: CircleAvatar(
+                                    backgroundColor: Color(0xFFEFEEF9),
+                                    radius: 15.0,
+                                    backgroundImage: AssetImage('assets/icons/search.png'),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
+
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Container(

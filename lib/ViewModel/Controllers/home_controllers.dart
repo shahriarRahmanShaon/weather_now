@@ -32,6 +32,13 @@ class HomeController extends GetxController {
     }
   }
 
+  getWeatherDataForCity(String cityName) {
+    String url = 'https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=${AppConstants.apiKey}';
+    ApiServices().getApi(url).then((value) {
+      weatherModel.value = WeatherModel.fromJson(value);
+    });
+  }
+
   getSevenDayForecast(double lat, double lon) {
     String url = AppConstants.getForcastApiUrl(lat, lon);
     ApiServices().getApi(url).then((value) {

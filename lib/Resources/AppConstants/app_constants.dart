@@ -27,4 +27,21 @@ class AppConstants {
     }
   }
 
+  static const List<String> cities = [
+    'London', 'New York', 'Tokyo', 'Riyadh', 'Moscow', 'Sydney', 'Berlin',
+    'Paris', 'Los Angeles', 'Mumbai', 'Delhi', 'Beijing', 'Shanghai', 'Cairo',
+    'Dubai', 'Singapore', 'Mexico City', 'Lagos', 'Buenos Aires', 'Istanbul',
+    'Johannesburg', 'Seoul', 'Bangkok', 'Kuala Lumpur', 'Rome', 'Madrid',
+    'Chicago', 'Toronto', 'Vancouver', 'Melbourne', 'Perth', 'Brisbane',
+    'Cape Town', 'Dublin', 'Zurich', 'Vienna', 'Lisbon', 'Helsinki', 'Oslo',
+    'Stockholm', 'Warsaw', 'Budapest', 'Prague', 'Athens', 'Copenhagen',
+    'Santiago', 'Bogota', 'Rio de Janeiro', 'Sao Paulo', 'Lima', 'Havana',
+    'Caracas', 'Manila', 'Jakarta', 'Hanoi', 'Kolkata', 'Karachi',
+    'Lahore', 'Islamabad', 'Kabul', 'Tehran', 'Baghdad', 'Beirut', 'Amman',
+    'Jerusalem', 'Damascus', 'Addis Ababa', 'Accra', 'Nairobi', 'Algiers',
+    'Casablanca', 'Rabat', 'Tunis', 'Tripoli', 'Kigali', 'Luanda', 'Yaounde',
+    'Kinshasa', 'Maputo', 'Harare', 'Pretoria', 'Windhoek', 'Banjul', 'Freetown',
+    'Monrovia', 'Abuja', 'Dakar', 'Nouakchott', 'Mogadishu', 'Djibouti', 'Muscat'
+  ];
+
 }
