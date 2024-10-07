@@ -80,7 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Greeting and search buttons
                       Row(
                         children: [
                           const Text(
@@ -142,8 +141,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       const SizedBox(height: 30),
-
-                      // WeatherCard for the main city
                       WeatherCard(
                         city: '${_homeController.weatherModel.value?.name ?? ''}',
                         temperature: '${_homeController.weatherModel.value?.main?.temp ?? ''}',
@@ -156,8 +153,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       ),
                       const SizedBox(height: 30),
-
-                      // Around the world section with add button
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -171,13 +166,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           IconButton(
                             icon: const Icon(Icons.add),
-                            onPressed: _showAddLocationPopup, // Show popup on press
+                            onPressed: _showAddLocationPopup,
                           ),
                         ],
                       ),
                       const SizedBox(height: 10.0),
-
-                      // Display WeatherCards for each city in weatherDataForSpecificLocations
                       Column(
                         children: _homeController.weatherDataForSpecificLocations.entries.map((entry) {
                           return Column(
@@ -199,8 +192,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-
-            // Loader for location fetching
             if (_locationController.isAccessingLocation.value)
               Container(
                 color: Colors.black.withOpacity(0.7),
