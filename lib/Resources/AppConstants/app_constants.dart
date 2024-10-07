@@ -5,8 +5,8 @@ class AppConstants {
     return 'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apiKey';
   }
 
-  static String getForcastApiUrl(double lat, double lon) {
-    return 'https://api.openweathermap.org/data/2.5/forcast?lat=$lat&lon=$lon&appid=$apiKey';
+  static String getForcastApiUrl(String city) {
+    return 'https://api.openweathermap.org/data/2.5/forecast?q=$city&appid=$apiKey';
   }
 
   static String getWeatherImage(num code) {

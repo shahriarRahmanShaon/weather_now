@@ -69,7 +69,7 @@ class WeatherCard extends StatelessWidget {
                     width: 120,
                   ),
                   Text(
-                    '${temperature.toCelsius().toStringAsFixed(2)} °C',
+                    '${temperature.toCelsius().toStringAsFixed(0)} °C',
                     style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w600,

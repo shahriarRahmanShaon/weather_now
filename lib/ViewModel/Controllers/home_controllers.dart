@@ -8,7 +8,7 @@ import '../../View/Home/home_screen.dart';
 class HomeController extends GetxController {
   Rx<WeatherModel?> weatherModel = Rx<WeatherModel?>(null);
   var weatherDataForSpecificLocations = <String, WeatherModel>{}.obs;
-  var forecastDataForSpecificLocations = <String, WeatherForecast>{}.obs;
+  var selectedForecasts = <ForecastList>[].obs;
   var weatherDataAroundTheWorld = ["Tokyo"].obs;
 
   getCurrentWeatherData(String url) {
@@ -33,11 +33,26 @@ class HomeController extends GetxController {
     });
   }
 
-  getSevenDayForecast(double lat, double lon) {
-    String url = AppConstants.getForcastApiUrl(lat, lon);
+  getSevenDayForecast(String city) {
+    String url = AppConstants.getForcastApiUrl(city);
     ApiServices().getApi(url).then((value) {
-      forecastDataForSpecificLocations['locationName'] = WeatherForecast.fromJson(value);
+      WeatherForecast forecast = WeatherForecast.fromJson(value);
+      var dailyForecasts = _extractDailyForecasts(forecast.list ?? []);
+      selectedForecasts.clear();
+      selectedForecasts.addAll(dailyForecasts);
     });
-    print(forecastDataForSpecificLocations);
+  }
+
+  List<ForecastList> _extractDailyForecasts(List<ForecastList> forecasts) {
+    Map<String, ForecastList> dailyForecastMap = {};
+
+    for (var forecast in forecasts) {
+      String date = forecast.dt_txt?.split(' ')[0] ?? '';
+      if (!dailyForecastMap.containsKey(date) ||
+          forecast.dt_txt?.contains('12:00:00') == true) {
+        dailyForecastMap[date] = forecast;
+      }
+    }
+    return dailyForecastMap.values.toList();
   }
 }
