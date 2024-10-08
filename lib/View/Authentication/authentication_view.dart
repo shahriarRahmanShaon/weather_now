@@ -30,7 +30,6 @@ class AuthenticationView extends StatelessWidget {
     );
   }
 
-  // Login-specific design
   Widget _buildLoginView(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +55,6 @@ class AuthenticationView extends StatelessWidget {
     );
   }
 
-  // Signup-specific design
   Widget _buildGetStartedView(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -82,7 +80,6 @@ class AuthenticationView extends StatelessWidget {
     );
   }
 
-  // Email TextField
   Widget _buildEmailField() {
     return TextField(
       controller: _controller.emailController,
@@ -94,7 +91,6 @@ class AuthenticationView extends StatelessWidget {
     );
   }
 
-  // Password TextField
   Widget _buildPasswordField() {
     return TextField(
       controller: _controller.passwordController,
@@ -106,11 +102,9 @@ class AuthenticationView extends StatelessWidget {
     );
   }
 
-  // Login Button
   Widget _buildLoginButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Trigger login logic here
         _controller.login();
       },
       style: ElevatedButton.styleFrom(
@@ -126,11 +120,9 @@ class AuthenticationView extends StatelessWidget {
     );
   }
 
-  // Signup Button
   Widget _buildSignupButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Trigger signup logic here
         _controller.signup();
       },
       style: ElevatedButton.styleFrom(

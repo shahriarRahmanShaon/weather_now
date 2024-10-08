@@ -162,8 +162,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   backgroundColor: const Color(0xFFEFEEF9),
                                   radius: 15.0,
                                   child: InkWell(
-                                    onTap: () async {
-                                      await FirebaseAuth.instance.signOut();
+                                    onTap: () {
+                                      _showAlertDialog(context);
                                     },
                                     child: const Icon(
                                       Icons.logout
@@ -239,6 +239,33 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         );
       }),
+    );
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Logout'),
+        content: const Text('Are you sure you want to logout?'),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel'),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.pop(context);
+            },
+            child: const Text('Logout'),
+          ),
+        ],
+      ),
     );
   }
 }
