@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:weather_now/Resources/AppConstants/app_constants.dart';
@@ -66,6 +67,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  _signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,18 +110,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
+                                  padding: EdgeInsets.all(2.0),
                                   child: CircleAvatar(
                                     backgroundColor: Color(0xFFEFEEF9),
                                     radius: 15.0,
                                     backgroundImage: AssetImage('assets/icons/search.png'),
                                   ),
                                 ),
+
                               ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
+                            padding: const EdgeInsets.only(left: 4.0),
                             child: Container(
                               padding: const EdgeInsets.all(4.0),
                               decoration: BoxDecoration(
@@ -128,12 +134,41 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               child: const Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(4.0),
                                 child: CircleAvatar(
                                   backgroundColor: Color(0xFFEFEEF9),
                                   radius: 15.0,
                                   backgroundImage:
                                   AssetImage('assets/icons/globe.png'),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4.0),
+                            child: Container(
+                              padding: const EdgeInsets.all(4.0),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFEFEEF9),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color(0xFFF7F6FC),
+                                  width: 2.0,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: CircleAvatar(
+                                  backgroundColor: const Color(0xFFEFEEF9),
+                                  radius: 15.0,
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await FirebaseAuth.instance.signOut();
+                                    },
+                                    child: const Icon(
+                                      Icons.logout
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
