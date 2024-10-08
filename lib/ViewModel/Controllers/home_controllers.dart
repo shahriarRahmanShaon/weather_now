@@ -18,7 +18,6 @@ class HomeController extends GetxController {
   }
 
   getWeatherDataForFixedLocations() {
-    weatherDataAroundTheWorld = ["Tokyo"].obs;
     for (var city in weatherDataAroundTheWorld) {
       String url = 'https://api.openweathermap.org/data/2.5/weather?q=$city&appid=${AppConstants.apiKey}';
       ApiServices().getApi(url).then((value) {

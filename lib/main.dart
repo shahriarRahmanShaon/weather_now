@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:weather_now/View/Details/Components/carousel.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import 'package:weather_now/View/Home/home_screen.dart';
 import 'package:weather_now/View/Intro/intro_view.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,6 +24,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  //final SpeechToText _speechToText = Get.put(SpeechToText());
   bool _isSignIn = false;
 
   @override
@@ -41,8 +42,10 @@ class _MyAppState extends State<MyApp> {
         }
       });
     });
+    //_initSpeech();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

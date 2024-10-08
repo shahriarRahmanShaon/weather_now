@@ -41,6 +41,7 @@ dependencies:
   firebase_auth: ^5.2.0
   syncfusion_flutter_gauges: ^27.1.51
   modal_bottom_sheet: ^3.0.0
+  speech_to_text: ^6.6.0
 
 dev_dependencies:
   flutter_test:

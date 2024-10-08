@@ -52,6 +52,10 @@
      <key>NSLocationUsageDescription</key>
      <string>Older devices need location.</string>
      <key>NSLocationAlwaysUsageDescription</key>
-     <string>Can I haz location always?</string>
+     <string>Can I have location always?</string>
+     <key>NSSpeechRecognitionUsageDescription</key>
+     <string>we need to recognise speech for location selection</string>
+     <key>NSMicrophoneUsageDescription</key>
+     <string>Please allow microphone to capture your voice</string>
 </dict>
 </plist>

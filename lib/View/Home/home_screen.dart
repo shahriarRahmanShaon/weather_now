@@ -9,6 +9,7 @@ import 'package:weather_now/ViewModel/Controllers/location_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:weather_now/View/Details/Components/carousel.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,55 +21,42 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final LocationController _locationController = Get.put(LocationController());
   final HomeController _homeController = Get.put(HomeController());
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
+  String _lastWords = '';
 
   @override
   void initState() {
+    super.initState();
+    _speech = stt.SpeechToText();
     _locationController.getLocationInfo();
     _homeController.getWeatherDataForFixedLocations();
-    super.initState();
   }
 
-  void _showAddLocationPopup() {
-    String enteredCity = '';
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Add a City'),
-          content: TextField(
-            onChanged: (value) {
-              enteredCity = value;
-            },
-            decoration: const InputDecoration(
-              hintText: 'Enter city name',
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                if (enteredCity.isNotEmpty) {
-                  _homeController.weatherDataAroundTheWorld.add(enteredCity);
-                  _homeController.getWeatherDataForFixedLocations();
-                }
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-          ],
+  void _listen() async {
+    _lastWords = '';
+    if (!_isListening) {
+      bool available = await _speech.initialize(
+        onStatus: (val) => print('onStatus: $val'),
+        onError: (val) => print('onError: $val'),
+      );
+      print('Speech initialized: $available');
+      if (available) {
+        setState(() => _isListening = true);
+        _speech.listen(
+          onResult: (val) => setState(() {
+            _lastWords = val.recognizedWords;
+            _isListening = false;
+            _speech.stop();
+            _homeController.getWeatherDataForCity(_lastWords);
+          }),
         );
-      },
-    );
-  }
-
-  _signOut() async {
-    await FirebaseAuth.instance.signOut();
+      }
+    } else {
+      setState(() => _isListening = false);
+      _speech.stop();
+      print('Listening stopped');
+    }
   }
 
   @override
@@ -90,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           const Text(
                             'Hello Arian,\nDiscover the weather',
                             style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.w600),
+                                fontSize: 15.0, fontWeight: FontWeight.w800),
                           ),
                           const Spacer(),
                           Padding(
@@ -114,10 +102,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: CircleAvatar(
                                     backgroundColor: Color(0xFFEFEEF9),
                                     radius: 15.0,
-                                    backgroundImage: AssetImage('assets/icons/search.png'),
+                                    backgroundImage:
+                                    AssetImage('assets/icons/search.png'),
                                   ),
                                 ),
-
                               ),
                             ),
                           ),
@@ -133,13 +121,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                   width: 2.0,
                                 ),
                               ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(4.0),
-                                child: CircleAvatar(
-                                  backgroundColor: Color(0xFFEFEEF9),
-                                  radius: 15.0,
-                                  backgroundImage:
-                                  AssetImage('assets/icons/globe.png'),
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _listen();
+                                  },
+                                  child: CircleAvatar(
+                                    backgroundColor: const Color(0xFFEFEEF9),
+                                    radius: 15.0,
+                                    child: Icon(
+                                      _isListening
+                                          ? Icons.mic
+                                          : Icons.mic_off,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -166,7 +162,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       _showAlertDialog(context);
                                     },
                                     child: const Icon(
-                                      Icons.logout
+                                      Icons.logout,
+                                      color: Colors.red,
                                     ),
                                   ),
                                 ),
@@ -177,10 +174,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 30),
                       WeatherCard(
-                        city: '${_homeController.weatherModel.value?.name ?? ''}',
-                        temperature: '${_homeController.weatherModel.value?.main?.temp ?? ''}',
-                        weatherCondition: '${_homeController.weatherModel.value?.weather?[0].description ?? ''}',
-                        weatherImage: AppConstants.getWeatherImage(_homeController.weatherModel.value?.weather?[0].id ?? 0),
+                        city:
+                        '${_homeController.weatherModel.value?.name ?? ''}',
+                        temperature:
+                        '${_homeController.weatherModel.value?.main?.temp ?? ''}',
+                        weatherCondition:
+                        '${_homeController.weatherModel.value?.weather?[0].description ?? ''}',
+                        weatherImage: AppConstants.getWeatherImage(
+                            _homeController.weatherModel.value?.weather?[0].id ??
+                                0),
                         onTap: () {
                           showCupertinoModalBottomSheet(
                               context: context,
@@ -207,14 +209,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 10.0),
                       Column(
-                        children: _homeController.weatherDataForSpecificLocations.entries.map((entry) {
+                        children: _homeController.weatherDataForSpecificLocations
+                            .entries
+                            .map((entry) {
                           return Column(
                             children: [
                               WeatherCard(
                                 city: entry.key,
-                                temperature: '${entry.value.main?.temp ?? ''}',
-                                weatherCondition: '${entry.value.weather?[0].description ?? ''}',
-                                weatherImage: AppConstants.getWeatherImage(entry.value.weather?[0].id ?? 0),
+                                temperature:
+                                '${entry.value.main?.temp ?? ''}',
+                                weatherCondition:
+                                '${entry.value.weather?[0].description ?? ''}',
+                                weatherImage: AppConstants.getWeatherImage(
+                                    entry.value.weather?[0].id ?? 0),
                                 onTap: () {},
                               ),
                               const SizedBox(height: 10.0),
@@ -266,6 +273,45 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showAddLocationPopup() {
+    String enteredCity = '';
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add a City'),
+          content: TextField(
+            onChanged: (value) {
+              enteredCity = value;
+            },
+            decoration: const InputDecoration(
+              hintText: 'Enter city name',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                if (enteredCity.isNotEmpty) {
+                  _homeController.weatherDataAroundTheWorld.add(enteredCity);
+                  _homeController.getWeatherDataForFixedLocations();
+                }
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
